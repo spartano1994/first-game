@@ -10,28 +10,28 @@ pantalla = pygame.display.set_mode( ( 800 , 600 ) )
 	
 # título e ícono
 pygame.display.set_caption( "Naves" )
-icono = pygame.image.load( "planeta.png" )
+icono = pygame.image.load( "images/planeta.png" )
 pygame.display.set_icon( icono )
 
 # fondo de pantalla
-fondo = pygame.image.load( "espacio.jpg" )
+fondo = pygame.image.load( "images/espacio.jpg" )
 	
 # variables del jugador
-img_jugador = pygame.image.load("astronave.png")
+img_jugador = pygame.image.load("images/astronave.png")
 jugador_x = 368
 jugador_y = 536
 jugador_x_cambio = 0
 jugador_y_cambio = 0
 
 # variables del enemigo
-img_enemigo = pygame.image.load( "ufo.png" )
+img_enemigo = pygame.image.load( "images/ufo.png" )
 enemigo_x = rn.randint( 0 , 736 )
 enemigo_y = 50
 enemigo_x_cambio = rn.choice( ( 0.1 , -0.1  ) )
 enemigo_y_cambio = 0
 
 # variables de la bala
-img_bala = pygame.image.load( "bala.png" )
+img_bala = pygame.image.load( "images/bala.png" )
 bala_x = 0
 bala_y = 0
 bala_y_cambio = 1
