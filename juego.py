@@ -22,7 +22,6 @@ jugador_x = 368
 jugador_y = 536
 jugador_x_cambio = 0
 jugador_y_cambio = 0
-puntaje = 0
 
 # variables del enemigo en listas
 img_enemigo = []
@@ -45,6 +44,12 @@ bala_x = 0
 bala_y = 0
 bala_y_cambio = 2
 bala_visible = False
+
+# puntaje
+puntaje = 0
+fuente = pygame.font.Font( "freesansbold.ttf" , 32 )
+texto_x = 10
+texto_y = 10
 	
 # colocar al jugador
 def jugador( x , y ):
@@ -67,6 +72,12 @@ def detectar_colision( x1 , y1 , x2 , y2 ):
 		return True
 	else:
 		return False
+
+# función mostrar puntaje
+def mostrar_puntaje( x , y ):
+	texto = fuente.render( f"Puntaje: {puntaje}" , True , ( 255 , 255 , 255 ) )
+	pantalla.blit( texto , ( x , y ) )
+
 
 # loop del juego
 ejecucion = True
@@ -135,14 +146,15 @@ while ejecucion:
 	#colision con bala
 	for i in range( cantidad_enemigos ):
 		colision = detectar_colision( enemigo_x[ i ] , enemigo_y[ i ] , bala_x , bala_y )
+
 		if colision == True:
-			bala_y == jugador_y
+			bala_y = jugador_y
 			bala_visible = False
-			puntaje += 1  
 			enemigo_x[ i ] = rn.randint( 0 , 736 ) 
 			enemigo_y[ i ] = rn.randint( 0 , 250 )
 			enemigo_x_cambio[ i ] = rn.choice( ( 0.5 , -0.5 ) ) 
 			enemigo_y_cambio[ i ] = rn.randint( 25 , 60 ) 
+			puntaje += 1  
 
 	# jugador atravesando pantalla en x
 	if jugador_x <= -33:
@@ -158,6 +170,8 @@ while ejecucion:
 
 
 	jugador( jugador_x , jugador_y )
+
+	mostrar_puntaje( texto_x , texto_y )
 
 	# actualizar
 	pygame.display.update()
