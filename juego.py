@@ -42,7 +42,7 @@ for i in range( cantidad_enemigos ):
 img_bala = pygame.image.load( "images/bala.png" )
 bala_x = 0
 bala_y = 0
-bala_y_cambio = 2
+bala_y_cambio = 3
 bala_visible = False
 
 # puntaje
@@ -78,6 +78,11 @@ def mostrar_puntaje( x , y ):
 	texto = fuente.render( f"Puntaje: {puntaje}" , True , ( 255 , 255 , 255 ) )
 	pantalla.blit( texto , ( x , y ) )
 
+# agregar música
+pygame.mixer.music.load( "music/universe.mp3" )
+pygame.mixer.music.set_volume( 0.5 )
+pygame.mixer.music.play(-1)
+
 
 # loop del juego
 ejecucion = True
@@ -104,6 +109,8 @@ while ejecucion:
 				jugador_y_cambio = 0.3
 
 			if evento.key == pygame.K_SPACE:
+				sonido_bala = pygame.mixer.Sound( "music/laser.mp3" )
+				sonido_bala.play()
 				if bala_visible == False:
 					bala_x = jugador_x 
 					bala_y = jugador_y
@@ -124,7 +131,6 @@ while ejecucion:
 	# modificar ubicación del enemigo
 	for i in range( cantidad_enemigos ):
 		enemigo_x[i] += enemigo_x_cambio[i]
-		
 
 		# limitaciones en el movimiento del enemigo
 		if enemigo_x[i] <= 0:
@@ -150,6 +156,8 @@ while ejecucion:
 		if colision == True:
 			bala_y = jugador_y
 			bala_visible = False
+			sonido_explosion = pygame.mixer.Sound( "music/explosion.mp3" )
+			sonido_explosion.play()
 			enemigo_x[ i ] = rn.randint( 0 , 736 ) 
 			enemigo_y[ i ] = rn.randint( 0 , 250 )
 			enemigo_x_cambio[ i ] = rn.choice( ( 0.5 , -0.5 ) ) 
