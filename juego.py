@@ -17,11 +17,13 @@ pygame.display.set_icon( icono )
 fondo = pygame.image.load( "images/espacio.jpg" )
 	
 # variables del jugador
-img_jugador = pygame.image.load("images/astronave.png")
+img_jugador = pygame.image.load( "images/astronave.png" )
 jugador_x = 368
 jugador_y = 536
 jugador_x_cambio = 0
 jugador_y_cambio = 0
+colisiones = 0
+terminado = False
 
 # variables del enemigo en listas
 img_enemigo = []
@@ -50,6 +52,13 @@ puntaje = 0
 fuente = pygame.font.Font( "freesansbold.ttf" , 32 )
 texto_x = 10
 texto_y = 10
+
+# texto final del juego
+fuente_final = pygame.font.Font( "freesansbold.ttf" , 50 )
+
+def texto_final():
+	mi_fuente_final = fuente_final.render( "Fin del juego" , True , ( 255 , 255 , 255 )  )
+	pantalla.blit( mi_fuente_final , ( 220 , 200) )
 	
 # colocar al jugador
 def jugador( x , y ):
@@ -58,6 +67,7 @@ def jugador( x , y ):
 # colocar al enemigo
 def enemigo( x , y , i ):
 	pantalla.blit( img_enemigo[i] , ( x , y ) )
+
 
 # función disparar bala
 def disparar( x , y ):
@@ -109,8 +119,9 @@ while ejecucion:
 				jugador_y_cambio = 0.3
 
 			if evento.key == pygame.K_SPACE:
-				sonido_bala = pygame.mixer.Sound( "music/laser.mp3" )
-				sonido_bala.play()
+				if terminado == False:
+					sonido_bala = pygame.mixer.Sound( "music/laser.mp3" )
+					sonido_bala.play()
 				if bala_visible == False:
 					bala_x = jugador_x 
 					bala_y = jugador_y
@@ -132,6 +143,28 @@ while ejecucion:
 	for i in range( cantidad_enemigos ):
 		enemigo_x[i] += enemigo_x_cambio[i]
 
+		# fin del juego por llegada
+		if enemigo_y[i] > 600:
+			for k in range( cantidad_enemigos ):
+				enemigo_y[k] = 1000
+			jugador_y = -1000
+			terminado = True
+			texto_final()
+			break
+
+		# fin del juego por choque con la nave
+		colision_naves = False
+		colision_naves = detectar_colision( jugador_x , jugador_y , enemigo_x[i] , enemigo_y[i] )
+		if colision_naves == True:
+			for k in range( cantidad_enemigos ):
+				enemigo_y[k] = 1000
+			sonido_explosion_nave = pygame.mixer.Sound( "music/explosion_nave.mp3" )
+			sonido_explosion_nave.play()
+			jugador_y = -1000
+			terminado = True
+			texto_final()
+			break
+						
 		# limitaciones en el movimiento del enemigo
 		if enemigo_x[i] <= 0:
 			enemigo_x_cambio[i] = 0.5
@@ -150,6 +183,7 @@ while ejecucion:
 		bala_y -= bala_y_cambio
 
 	#colision con bala
+	colision = False
 	for i in range( cantidad_enemigos ):
 		colision = detectar_colision( enemigo_x[ i ] , enemigo_y[ i ] , bala_x , bala_y )
 
@@ -167,13 +201,13 @@ while ejecucion:
 	# jugador atravesando pantalla en x
 	if jugador_x <= -33:
 		jugador_x = 833
-	elif jugador_x > 833:
+	elif jugador_x >= 833:
 		jugador_x = -33
 	
 	# jugador limitando pantalla en y
-	if jugador_y <= 0:
+	if jugador_y <= 0 and jugador_y >= -128:
 		jugador_y = 0
-	elif jugador_y >= 568:
+	elif jugador_y >= 568 and jugador_y <=700:
 		jugador_y = 568
 
 
