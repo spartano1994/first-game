@@ -10,14 +10,14 @@ pantalla = pygame.display.set_mode( ( 800 , 600 ) )
 	
 # título e ícono
 pygame.display.set_caption( "Naves" )
-icono = pygame.image.load( "images/planeta.png" )
+icono = pygame.image.load( "c:/Users/user/Desktop/Projects/first_game/images/planeta.png" )
 pygame.display.set_icon( icono )
 
 # fondo de pantalla
-fondo = pygame.image.load( "images/espacio.jpg" )
+fondo = pygame.image.load( "c:/Users/user/Desktop/Projects/first_game/images/espacio.jpg" )
 	
 # variables del jugador
-img_jugador = pygame.image.load( "images/astronave.png" )
+img_jugador = pygame.image.load( "c:/Users/user/Desktop/Projects/first_game/images/astronave.png" )
 jugador_x = 368
 jugador_y = 536
 jugador_x_cambio = 0
@@ -34,14 +34,14 @@ enemigo_y_cambio = []
 cantidad_enemigos = 24
 
 for i in range( cantidad_enemigos ):
-	img_enemigo.append( pygame.image.load( "images/ufo.png" ) )
+	img_enemigo.append( pygame.image.load( "c:/Users/user/Desktop/Projects/first_game/images/ufo.png" ) )
 	enemigo_x.append(  rn.randint( 0 , 736 ) )
 	enemigo_y.append( rn.randint( 0 , 250 ) )
 	enemigo_x_cambio.append( rn.choice( ( 0.5 , -0.5 ) ) )
 	enemigo_y_cambio.append( rn.randint( 10 , 40 ) )
 
 # variables de la bala
-img_bala = pygame.image.load( "images/bala.png" )
+img_bala = pygame.image.load( "c:/Users/user/Desktop/Projects/first_game/images/bala.png" )
 bala_x = 0
 bala_y = 0
 bala_y_cambio = 3
@@ -58,7 +58,7 @@ fuente_final = pygame.font.Font( "freesansbold.ttf" , 50 )
 
 def texto_final():
 	mi_fuente_final = fuente_final.render( "Fin del juego" , True , ( 255 , 255 , 255 )  )
-	pantalla.blit( mi_fuente_final , ( 220 , 200) )
+	pantalla.blit( mi_fuente_final , ( 220 , 200 ) )
 	
 # colocar al jugador
 def jugador( x , y ):
@@ -66,18 +66,18 @@ def jugador( x , y ):
 
 # colocar al enemigo
 def enemigo( x , y , i ):
-	pantalla.blit( img_enemigo[i] , ( x , y ) )
+	pantalla.blit( img_enemigo[ i ] , ( x , y ) )
 
 
 # función disparar bala
 def disparar( x , y ):
 	global bala_visible
 	bala_visible = True
-	pantalla.blit( img_bala , ( x , y-16 ) )
+	pantalla.blit( img_bala , ( x , y - 16 ) )
 
 #Función detectar colisiones:
 def detectar_colision( x1 , y1 , x2 , y2 ):
-	distancia = math.sqrt( (x2-x1)**2 + (y2-y1)**2 )
+	distancia = math.sqrt( ( x2 - x1 )**2 + ( y2 - y1 )**2 )
 	if distancia < 30:
 		return True
 	else:
@@ -85,13 +85,13 @@ def detectar_colision( x1 , y1 , x2 , y2 ):
 
 # función mostrar puntaje
 def mostrar_puntaje( x , y ):
-	texto = fuente.render( f"Puntaje: {puntaje}" , True , ( 255 , 255 , 255 ) )
+	texto = fuente.render( f"Puntaje: { puntaje }" , True , ( 255 , 255 , 255 ) )
 	pantalla.blit( texto , ( x , y ) )
 
 # agregar música
-pygame.mixer.music.load( "music/universe.mp3" )
+pygame.mixer.music.load( "c:/Users/user/Desktop/Projects/first_game/music/universe.mp3" )
 pygame.mixer.music.set_volume( 0.5 )
-pygame.mixer.music.play(-1)
+pygame.mixer.music.play( -1 )
 
 
 # loop del juego
@@ -120,7 +120,7 @@ while ejecucion:
 
 			if evento.key == pygame.K_SPACE:
 				if terminado == False:
-					sonido_bala = pygame.mixer.Sound( "music/laser.mp3" )
+					sonido_bala = pygame.mixer.Sound( "c:/Users/user/Desktop/Projects/first_game/music/laser.mp3" )
 					sonido_bala.play()
 				if bala_visible == False:
 					bala_x = jugador_x 
@@ -141,12 +141,12 @@ while ejecucion:
 
 	# modificar ubicación del enemigo
 	for i in range( cantidad_enemigos ):
-		enemigo_x[i] += enemigo_x_cambio[i]
+		enemigo_x[ i ] += enemigo_x_cambio[ i ]
 
 		# fin del juego por llegada
-		if enemigo_y[i] > 600:
+		if enemigo_y[ i ] > 600:
 			for k in range( cantidad_enemigos ):
-				enemigo_y[k] = 1000
+				enemigo_y[ k ] = 1000
 			jugador_y = -1000
 			terminado = True
 			texto_final()
@@ -154,11 +154,11 @@ while ejecucion:
 
 		# fin del juego por choque con la nave
 		colision_naves = False
-		colision_naves = detectar_colision( jugador_x , jugador_y , enemigo_x[i] , enemigo_y[i] )
+		colision_naves = detectar_colision( jugador_x , jugador_y , enemigo_x[ i ] , enemigo_y[ i ] )
 		if colision_naves == True:
 			for k in range( cantidad_enemigos ):
-				enemigo_y[k] = 1000
-			sonido_explosion_nave = pygame.mixer.Sound( "music/explosion_nave.mp3" )
+				enemigo_y[ k ] = 1000
+			sonido_explosion_nave = pygame.mixer.Sound( "c:/Users/user/Desktop/Projects/first_game/music/explosion_nave.mp3" )
 			sonido_explosion_nave.play()
 			jugador_y = -1000
 			terminado = True
@@ -166,14 +166,14 @@ while ejecucion:
 			break
 						
 		# limitaciones en el movimiento del enemigo
-		if enemigo_x[i] <= 0:
-			enemigo_x_cambio[i] = 0.5
-			enemigo_y[i] += enemigo_y_cambio[i]
-		elif enemigo_x[i] >= 736:
-			enemigo_x_cambio[i] = -0.5
-			enemigo_y[i] += enemigo_y_cambio[i]
+		if enemigo_x[ i ] <= 0:
+			enemigo_x_cambio[ i ] = 0.5
+			enemigo_y[ i ] += enemigo_y_cambio[ i ]
+		elif enemigo_x[ i ] >= 736:
+			enemigo_x_cambio[ i ] = -0.5
+			enemigo_y[ i ] += enemigo_y_cambio[ i ]
 				
-		enemigo( enemigo_x[i] , enemigo_y[i] , i)
+		enemigo( enemigo_x[ i ] , enemigo_y[ i ] , i )
 
 	# modificar ubicaión bala
 	if bala_y < -6:
@@ -190,7 +190,7 @@ while ejecucion:
 		if colision == True:
 			bala_y = jugador_y
 			bala_visible = False
-			sonido_explosion = pygame.mixer.Sound( "music/explosion.mp3" )
+			sonido_explosion = pygame.mixer.Sound( "c:/Users/user/Desktop/Projects/first_game/music/explosion.mp3" )
 			sonido_explosion.play()
 			enemigo_x[ i ] = rn.randint( 0 , 736 ) 
 			enemigo_y[ i ] = rn.randint( 0 , 250 )
@@ -217,5 +217,3 @@ while ejecucion:
 
 	# actualizar
 	pygame.display.update()
-
-
